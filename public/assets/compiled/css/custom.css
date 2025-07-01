@@ -1,0 +1,70 @@
+.main-sidebar {
+    position: fixed; /* Keeps sidebar in place while scrolling */
+    top: 0;
+    left: 0;
+    width: 250px; /* Adjust width as needed */
+    height: 100vh; /* Full height of the viewport */
+    background-color: #3b5998; /* Blue color matching your design */
+    padding-top: 1rem;
+    z-index: 1000;
+    color: #fff;
+    transition: width 0.3s; /* Smooth transition for responsive behavior */
+}
+
+.sidebar-content {
+    padding: 1rem;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    margin-bottom: 0.5rem;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.menu-item a:hover {
+    background-color: #4c70ba; /* Lighter blue on hover */
+    color: #fff;
+}
+
+.burger-btn {
+    margin-bottom: 1rem;
+    color: #fff;
+    padding: 0.5rem;
+    display: block;
+}
+
+/* Main content adjustment to avoid overlap */
+.container {
+    margin-left: 250px; /* Match sidebar width */
+    padding: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .main-sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+    .main-sidebar.active {
+        width: 250px;
+    }
+    .container {
+        margin-left: 0;
+    }
+    .burger-btn {
+        display: block !important; /* Show burger on mobile */
+    }
+}
