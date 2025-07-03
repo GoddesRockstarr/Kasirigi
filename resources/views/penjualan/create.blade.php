@@ -1,4 +1,5 @@
 @extends('layouts.main')
+
 @section('content')
 <div class="container">
     <h2>Transaksi Baru</h2>

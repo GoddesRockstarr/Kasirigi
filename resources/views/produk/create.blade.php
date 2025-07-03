@@ -1,25 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Data Produk</title>
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/compiled/css/custom.css') }}">
-</head>
-<body>
-    <x-header></x-header>
-    <x-navbar></x-navbar> 
-<h1>Tambah Produk</h1>
-<form action="{{ route('produk.store') }}" method="POST">
-  @csrf
-  Nama: <input type="text" name="nama"><br>
-  Stok: <input type="number" name="stok"><br>
-  Harga: <input type="number" name="harga"><br>
-  <button type="submit">Simpan</button>
-</form>
-</body>
-</html>
+@extends('layouts.main')
+@section('title', 'Tambah Produk')
+<x-header></x-header>
+<x-navbar></x-navbar>
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Form Input Produk</h4>
+    </div>
+    <div class="card-content">
+        <div class="card-body">
+            <form class="form form-horizontal" action="{{ route('produk.store') }}" method="POST">
+                @csrf
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="nama-horizontal">Nama</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <input type="text" id="nama-horizontal" class="form-control" name="nama" placeholder="Nama Produk" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="stok-horizontal">Stok</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <input type="number" id="stok-horizontal" class="form-control" name="stok" placeholder="Stok" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="harga-horizontal">Harga</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <input type="number" id="harga-horizontal" class="form-control" name="harga" placeholder="Harga" required>
+                        </div>
+                        <div class="col-sm-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                            <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

@@ -1,7 +1,11 @@
- @<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
  <link rel="stylesheet" href="./assets/compiled/css/app.css">
   <link rel="stylesheet" href="publics/compiled/css/app-dark.css">
   <link rel="stylesheet" href="publics/compiled/css/iconly.css">
+   <link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/custom.css') }}">
 
 
 <div id="app">
@@ -32,3 +36,10 @@
                                 </ul>
                             </div>
 </header>
+<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
+    <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/horizontal-layout.js') }}"></script>
+    <script src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
+    <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/dashboard.js') }}"></script>
