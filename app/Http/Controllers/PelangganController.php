@@ -20,8 +20,20 @@ class PelangganController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'required|string',
+            'no_hp' => 'required|digits_between:10,13',
+        ],[
+            'nama.required' => "Nama wajib diisi",
+            'nama.string' => "nama wajib berupa string",
+        ]);
+        try{
         Pelanggan::create($request->all());
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan ditambahkan!');
+
+        }catch(\Exception $e){
+            return redirect()->back()->withInput()->withErrors(['submit' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+        };
     }
 
     public function edit(Pelanggan $pelanggan)

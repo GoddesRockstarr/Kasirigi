@@ -1,64 +1,156 @@
 @extends('layouts.main')
+@section('title', 'Tambah Penjualan')
 
 @section('content')
-<div class="container">
-    <h2>Transaksi Baru</h2>
-    <form action="{{ route('penjualan.store') }}" method="POST">
-        @csrf
-        <div class="mb-2">
-            <label>Pelanggan</label>
-            <select name="pelanggan_id" class="form-control">
-                <option value="">Umum</option>
-                @foreach ($pelanggan as $p)
-                    <option value="{{ $p->id }}">{{ $p->nama }}</option>
-                @endforeach
-            </select>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Form Input Penjualan</h4>
+    </div>
+    <div class="card-content">
+        <div class="card-body">
+            <form class="form form-horizontal" action="{{ route('penjualan.store') }}" method="POST" id="penjualan-form">
+                @csrf
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="pelanggan-horizontal">Pelanggan</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <select id="pelanggan-horizontal" class="form-control" name="pelanggan_id">
+                                <option value="">Umum</option>
+                                @foreach ($pelanggans as $pelanggan)
+                                    <option value="{{ $pelanggan->id }}">{{ $pelanggan->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Items</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <div id="items-container">
+                                <div class="item-row mb-3" data-index="0">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <select name="items[0][produk_id]" class="form-control produk-select" required>
+                                                <option value="">Pilih Produk</option>
+                                                @foreach ($produks as $produk)
+                                                    <option value="{{ $produk->id }}" data-harga="{{ $produk->harga }}">{{ $produk->nama }} (Rp {{ number_format($produk->harga, 0, ',', '.') }})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" name="items[0][jumlah]" class="form-control jumlah-input" placeholder="Jumlah" min="1" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control subtotal-input" placeholder="Subtotal" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger remove-item">X</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-2" id="add-item">Tambah Item</button>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="total-harga-horizontal">Total Harga</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <input type="text" id="total-harga-horizontal" class="form-control" name="total_harga" placeholder="Total Harga" readonly>
+                        </div>
+                        <div class="col-sm-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                            <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <table class="table" id="produk-table">
-            <thead>
-                <tr>
-                    <th>Produk</th>
-                    <th>Jumlah</th>
-                    <th>Subtotal</th>
-                    <th><button type="button" onclick="tambahRow()" class="btn btn-sm btn-primary">+</button></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <select name="produk_id[]" class="form-control" onchange="hitungSubtotal(this)">
-                            @foreach ($produk as $p)
-                                <option value="{{ $p->id }}" data-harga="{{ $p->harga }}">{{ $p->nama }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td><input type="number" name="jumlah[]" class="form-control" oninput="hitungSubtotal(this)" value="1"></td>
-                    <td><input type="number" name="subtotal[]" class="form-control" readonly></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <button class="btn btn-success">Simpan Transaksi</button>
-    </form>
+    </div>
 </div>
 
+@section('scripts')
 <script>
-function hitungSubtotal(el) {
-    let row = el.closest('tr');
-    let select = row.querySelector('select');
-    let harga = select.options[select.selectedIndex].dataset.harga;
-    let jumlah = row.querySelector('input[name="jumlah[]"]').value;
-    let subtotal = row.querySelector('input[name="subtotal[]"]');
-    subtotal.value = harga * jumlah;
-}
+document.addEventListener('DOMContentLoaded', function () {
+    let itemIndex = 1;
 
-function tambahRow() {
-    let table = document.querySelector('#produk-table tbody');
-    let newRow = table.rows[0].cloneNode(true);
-    newRow.querySelectorAll('input').forEach(input => input.value = '');
-    table.appendChild(newRow);
-}
+    // Add new item row
+    document.getElementById('add-item').addEventListener('click', function () {
+        const container = document.getElementById('items-container');
+        const newRow = document.createElement('div');
+        newRow.className = 'item-row mb-3';
+        newRow.dataset.index = itemIndex;
+        newRow.innerHTML = `
+            <div class="row">
+                <div class="col-md-5">
+                    <select name="items[${itemIndex}][produk_id]" class="form-control produk-select" required>
+                        <option value="">Pilih Produk</option>
+                        @foreach ($produks as $produk)
+                            <option value="{{ $produk->id }}" data-harga="{{ $produk->harga }}">{{ $produk->nama }} (Rp {{ number_format($produk->harga, 0, ',', '.') }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" name="items[${itemIndex}][jumlah]" class="form-control jumlah-input" placeholder="Jumlah" min="1" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control subtotal-input" placeholder="Subtotal" readonly>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger remove-item">X</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(newRow);
+        itemIndex++;
+        attachEventListeners();
+    });
+
+    // Remove item row
+    function attachEventListeners() {
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function () {
+                if (document.querySelectorAll('.item-row').length > 1) {
+                    this.closest('.item-row').remove();
+                    calculateTotal();
+                }
+            });
+        });
+
+        document.querySelectorAll('.produk-select').forEach(select => {
+            select.addEventListener('change', calculateSubtotal);
+        });
+
+        document.querySelectorAll('.jumlah-input').forEach(input => {
+            input.addEventListener('input', calculateSubtotal);
+        });
+    }
+
+    // Calculate subtotal for each row
+    function calculateSubtotal() {
+        const row = this.closest('.item-row');
+        const select = row.querySelector('.produk-select');
+        const jumlahInput = row.querySelector('.jumlah-input');
+        const subtotalInput = row.querySelector('.subtotal-input');
+        const harga = select.options[select.selectedIndex]?.dataset.harga || 0;
+        const jumlah = jumlahInput.value || 0;
+        const subtotal = harga * jumlah;
+        subtotalInput.value = 'Rp ' + subtotal.toLocaleString('id-ID');
+        calculateTotal();
+    }
+
+    // Calculate total harga
+    function calculateTotal() {
+        let total = 0;
+        document.querySelectorAll('.subtotal-input').forEach(input => {
+            const value = parseFloat(input.value.replace('Rp ', '').replace(/\./g, '').replace(',', '.')) || 0;
+            total += value;
+        });
+        document.getElementById('total-harga-horizontal').value = 'Rp ' + total.toLocaleString('id-ID');
+    }
+
+    // Initial event listeners
+    attachEventListeners();
+});
 </script>
 @endsection

@@ -13,6 +13,10 @@ Route::get('/pindah', function(){
     return view('produk.index');
 });
 
+Route::get('/penjualan', function(){
+    return view('penjualan.index');
+});
+
 Route::get('/produk', [App\Http\Controllers\ProdukController::class, 'index'])->name('produk.index');
 
 use App\Http\Controllers\PelangganController;

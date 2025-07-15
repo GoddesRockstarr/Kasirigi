@@ -1,10 +1,21 @@
-@<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+<!DOCTYPE html>
+<html lang="en">
+    @extends('layouts.main')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
 
-    <link rel="stylesheet" href="{{ asset('assets/compiled/css/custom.css') }}">
-<div class="container">
+    <!-- Custom CSS -->
+      
+
     <x-header></x-header>
     <x-navbar></x-navbar>
+    
+<div class="container">
     <h2>Data Pelanggan</h2>
     <a href="{{ route('pelanggan.create') }}" class="btn btn-primary mb-2">Tambah Pelanggan</a>
     @if(session('success'))
@@ -35,3 +46,6 @@
     </table>
 </div>
 
+
+</body>
+</html>

@@ -2,6 +2,8 @@
 @section('title', 'Tambah Produk')
 <x-header></x-header>
 <x-navbar></x-navbar>
+    
+
 @section('content')
 <div class="card">
     <div class="card-header">
@@ -17,19 +19,19 @@
                             <label for="nama-horizontal">Nama</label>
                         </div>
                         <div class="col-md-8 form-group">
-                            <input type="text" id="nama-horizontal" class="form-control" name="nama" placeholder="Nama Produk" required>
+                            <input type="text" id="nama-horizontal" class="form-control" name="nama" placeholder="Nama Produk" >
                         </div>
                         <div class="col-md-4">
                             <label for="stok-horizontal">Stok</label>
                         </div>
                         <div class="col-md-8 form-group">
-                            <input type="number" id="stok-horizontal" class="form-control" name="stok" placeholder="Stok" required>
+                            <input type="number" id="stok-horizontal" class="form-control" name="stok" placeholder="Stok" >
                         </div>
                         <div class="col-md-4">
                             <label for="harga-horizontal">Harga</label>
                         </div>
                         <div class="col-md-8 form-group">
-                            <input type="number" id="harga-horizontal" class="form-control" name="harga" placeholder="Harga" required>
+                            <input type="number" id="harga-horizontal" class="form-control" name="harga" placeholder="Harga" >
                         </div>
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>

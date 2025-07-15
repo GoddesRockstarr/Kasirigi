@@ -11,8 +11,10 @@
   <link rel="stylesheet" href="publics/compiled/css/app-dark.css">
   <link rel="stylesheet" href="publics/compiled/css/iconly.css">
 
-    <link rel="stylesheet" href="{{ asset('mazer/assets/css/main/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('mazer/assets/css/main/app-dark.css') }}">
+    <<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/compiled/css/custom.css') }}">
     {{-- kalau pakai datatables bawaan --}}
     <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 </head>

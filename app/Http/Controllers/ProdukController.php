@@ -23,6 +23,15 @@ class ProdukController extends Controller
     }
 
     public function store(Request $request) {
+
+        $request->validate([
+            'nama' => 'required|string',
+            'harga' => 'required|float'
+        ],[
+            'nama.required' => "nama produk wajib diisi",
+            'harga.required' => "Harga wajib diisi"
+        ]);   
+
         Produk::create($request->all());
         return redirect()->route('produk.index')->with('success', 'Produk ditambahkan!');
     }
