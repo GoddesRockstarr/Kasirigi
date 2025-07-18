@@ -26,7 +26,7 @@ class ProdukController extends Controller
 
         $request->validate([
             'nama' => 'required|string',
-            'harga' => 'required|float'
+            'harga' => 'required|'
         ],[
             'nama.required' => "nama produk wajib diisi",
             'harga.required' => "Harga wajib diisi"

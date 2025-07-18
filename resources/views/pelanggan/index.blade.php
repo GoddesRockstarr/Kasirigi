@@ -21,7 +21,7 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped table-responsive ">
         <tr>
             <th>Nama</th>
             <th>No HP</th>

@@ -14,12 +14,13 @@
     <x-header></x-header>
     <x-navbar></x-navbar> <!-- Sidebar included here -->
     <div class="container mt-4">
+        <h2>Data Produk</h2>
         <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">+ Tambah Produk</a>
 
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-
+        
         <table class="table table-bordered table-striped table-responsive">
             <thead>
                 <tr>

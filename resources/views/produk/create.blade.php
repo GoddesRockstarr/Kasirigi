@@ -8,6 +8,16 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Form Input Produk</h4>
+         @if($errors->any())
+                            <div class="alert alert-danger alert-dismissible show fade">
+                                <ul>
+                                    @foreach($errors->all() as $pesan)
+                                    <li>{{ $pesan }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
     </div>
     <div class="card-content">
         <div class="card-body">
