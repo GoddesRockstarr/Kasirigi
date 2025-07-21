@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('pelanggan_id')->constrained('pelanggan')->onDelete('cascade');
             $table->decimal('total_price', 15, 2);
             $table->timestamp('sale_date');
             $table->timestamps();
@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('penjualan_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('penjualan_id')->constrained('penjualan')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('produk_id')->constrained('produk')->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('price', 15, 2);
             $table->decimal('subtotal', 15, 2);

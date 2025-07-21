@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return view('home');
 });
@@ -26,3 +27,10 @@ Route::resource('/pelanggan', PelangganController::class);
 use App\Http\Controllers\PenjualanController;
 Route::resource('/penjualan', PenjualanController::class);
 
+Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
+
+Route::post('/penjualan', [PenjualanController::class, 'store'])->name('penjualan.store');
+
+Route::get('/penjualan/{id}/edit', [PenjualanController::class, 'edit'])->name('penjualan.edit');
+
+Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');

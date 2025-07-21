@@ -1,124 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+    @extends('layouts.main')
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penjualan - Kasir</title>
-    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/css/main/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/simple-datatables/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/css/shared/iconly.css') }}">
 </head>
 <body>
-    <div id="app">
-        <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
+    <x-header></x-header>
+    <x-navbar></x-navbar>
 
-            <div class="page-heading">
-                <h3>Form Penjualan</h3>
+    <div class="container">
+        <h2>Data Penjualan</h2>
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#tambahPenjualanModal">Tambah Penjualan</button>
+        </div>
+
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-            <div class="page-content">
-                <section class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Tambah Penjualan</h4>
-                            </div>
-                            <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success">{{ session('success') }}</div>
-                                @endif
-                                @if (session('error'))
-                                    <div class="alert alert-danger">{{ session('error') }}</div>
-                                @endif
+        <table class="table table-bordered table-striped table-responsive" id="penjualanTable">
+            <thead>
+                <tr>
+                    <th>Pelanggan</th>
+                    <th>Total Harga</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($penjualan as $p)
+                <tr>
+                    <td>{{ $p->pelanggan->name }}</td>
+                    <td>{{ number_format($p->total_price, 0, ',', '.') }}</td>
+                    <td>{{ $p->sale_date }}</td>
+                    <td>
+                        <a href="{{ route('penjualan.edit', $p->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('penjualan.destroy', $p->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-                                <form action="{{ route('penjualan.store') }}" method="POST">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="customer_id" class="form-label">Pelanggan</label>
-                                        <select name="customer_id" id="customer_id" class="form-select" required>
-                                            <option value="">Pilih Pelanggan</option>
-                                            @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Produk</label>
-                                        <table class="table table-bordered" id="product-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Produk</th>
-                                                    <th>Harga</th>
-                                                    <th>Jumlah</th>
-                                                    <th>Subtotal</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="product-rows">
-                                                <tr>
-                                                    <td>
-                                                        <select name="products[0][id]" class="form-select product-select" required>
-                                                            <option value="">Pilih Produk</option>
-                                                            @foreach ($products as $product)
-                                                                <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td class="product-price">0</td>
-                                                    <td>
-                                                        <input type="number" name="products[0][quantity]" class="form-control quantity" min="1" required>
-                                                    </td>
-                                                    <td class="subtotal">0</td>
-                                                    <td><button type="button" class="btn btn-danger remove-row">Hapus</button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <button type="button" class="btn btn-primary mt-2" id="add-product">Tambah Produk</button>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <h5>Total: <span id="total-price">0</span></h5>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-success">Simpan Penjualan</button>
-                                </form>
-                            </div>
+    <!-- Modal Tambah Penjualan -->
+    <div class="modal fade" id="tambahPenjualanModal" tabindex="-1" aria-labelledby="tambahPenjualanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahPenjualanModalLabel">Tambah Penjualan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('penjualan.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="pelanggan_id" class="form-label">Pelanggan</label>
+                            <select name="pelanggan_id" id="pelanggan_id" class="form-select" required>
+                                <option value="">Pilih Pelanggan</option>
+                                @foreach ($pelanggans as $pelanggan)
+                                    <option value="{{ $pelanggan->id }}">{{ $pelanggan->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                </section>
+
+                        <div class="mb-3">
+                            <label class="form-label">Produk</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Produk</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah</th>
+                                        <th>Subtotal</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="produk-rows">
+                                    <tr>
+                                        <td>
+                                            <select name="produks[0][id]" class="form-select produk-select" required>
+                                                <option value="">Pilih Produk</option>
+                                                @foreach ($produks as $produk)
+                                                    <option value="{{ $produk->id }}" data-price="{{ $produk->price }}">{{ $produk->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="produk-price">0</td>
+                                        <td>
+                                            <input type="number" name="produks[0][quantity]" class="form-control quantity" min="1" required>
+                                        </td>
+                                        <td class="subtotal">0</td>
+                                        <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary mt-2" id="add-produk">Tambah Produk</button>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5>Total: <span id="total-price" class="badge bg-danger">0</span></h5>
+                        </div>
+                        <button type="submit" class="btn btn-success">Simpan Penjualan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="{{ asset('mazer/dist/assets/js/app.js') }}"></script>
-    <script src="{{ asset('mazer/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
+    <script src="{{ asset('mazer/assets/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('mazer/assets/js/app.js') }}"></script>
+    <script src="{{ asset('mazer/assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('mazer/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('mazer/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('mazer/assets/js/pages/datatables.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('#penjualanTable').DataTable();
+        });
+
         let rowIndex = 1;
 
-        document.getElementById('add-product').addEventListener('click', function () {
-            const tbody = document.getElementById('product-rows');
+        document.getElementById('add-produk').addEventListener('click', function () {
+            const tbody = document.getElementById('produk-rows');
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>
-                    <select name="products[${rowIndex}][id]" class="form-select product-select" required>
+                    <select name="produks[${rowIndex}][id]" class="form-select produk-select" required>
                         <option value="">Pilih Produk</option>
-                        @foreach ($products as $product)
-                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->name }}</option>
+                        @foreach ($produks as $produk)
+                            <option value="{{ $produk->id }}" data-price="{{ $produk->price }}">{{ $produk->name }}</option>
                         @endforeach
                     </select>
                 </td>
-                <td class="product-price">0</td>
+                <td class="produk-price">0</td>
                 <td>
-                    <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" min="1" required>
+                    <input type="number" name="produks[${rowIndex}][quantity]" class="form-control quantity" min="1" required>
                 </td>
                 <td class="subtotal">0</td>
-                <td><button type="button" class="btn btn-danger remove-row">Hapus</button></td>
+                <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
             `;
             tbody.appendChild(row);
             rowIndex++;
@@ -127,11 +162,11 @@
         });
 
         function attachEventListeners() {
-            document.querySelectorAll('.product-select').forEach(select => {
+            document.querySelectorAll('.produk-select').forEach(select => {
                 select.addEventListener('change', function () {
                     const price = this.options[this.selectedIndex].getAttribute('data-price');
                     const row = this.closest('tr');
-                    row.querySelector('.product-price').textContent = price || 0;
+                    row.querySelector('.produk-price').textContent = price || 0;
                     updateSubtotal(row);
                     updateTotalPrice();
                 });
@@ -154,7 +189,7 @@
         }
 
         function updateSubtotal(row) {
-            const price = parseFloat(row.querySelector('.product-price').textContent);
+            const price = parseFloat(row.querySelector('.produk-price').textContent);
             const quantity = parseInt(row.querySelector('.quantity').value) || 0;
             const subtotal = price * quantity;
             row.querySelector('.subtotal').textContent = subtotal;
