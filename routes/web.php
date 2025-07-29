@@ -20,6 +20,8 @@ Route::get('/penjualan', function(){
 
 Route::get('/produk', [App\Http\Controllers\ProdukController::class, 'index'])->name('produk.index');
 
+Route::get('/pelanggan', [App\Http\Controllers\ProdukController::class, 'store'])->name('pelanggan.store');
+
 use App\Http\Controllers\PelangganController;
 
 Route::resource('/pelanggan', PelangganController::class);

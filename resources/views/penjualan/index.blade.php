@@ -58,7 +58,7 @@
         </table>
     </div>
 
-   <!-- Modal Tambah Penjualan -->
+  <!-- Modal Tambah Penjualan -->
 <div class="modal fade" id="tambahPenjualanModal" tabindex="-1" aria-labelledby="tambahPenjualanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -122,7 +122,6 @@
         </div>
     </div>
 </div>
-
 
 
     <script src="{{ asset('mazer/assets/js/bootstrap.js') }}"></script>
@@ -197,7 +196,8 @@
     function updateTotalPrice() {
         let total = 0;
         document.querySelectorAll('.subtotal').forEach(subtotal => {
-            total += parseFloat(subtotal.textContent.replace(/[^\d.-]/g, '')) || 0;
+            const value = parseFloat(subtotal.textContent.replace(/[^\d.-]/g, '')) || 0;
+            total += value;
         });
         document.getElementById('total-price').textContent = total.toLocaleString('id-ID');
     }
