@@ -58,70 +58,72 @@
         </table>
     </div>
 
-    <!-- Modal Tambah Penjualan -->
-    <div class="modal fade" id="tambahPenjualanModal" tabindex="-1" aria-labelledby="tambahPenjualanModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahPenjualanModalLabel">Tambah Penjualan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('penjualan.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="pelanggan_id" class="form-label">Pelanggan</label>
-                            <select name="pelanggan_id" id="pelanggan_id" class="form-select" required>
-                                <option value="">Pilih Pelanggan</option>
-                                @foreach ($pelanggans as $pelanggan)
-                                    <option value="{{ $pelanggan->id }}">{{ $pelanggan->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+   <!-- Modal Tambah Penjualan -->
+<div class="modal fade" id="tambahPenjualanModal" tabindex="-1" aria-labelledby="tambahPenjualanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tambahPenjualanModalLabel">Tambah Penjualan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('penjualan.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="pelanggan_id" class="form-label">Pelanggan</label>
+                        <select name="pelanggan_id" id="pelanggan_id" class="form-select" required>
+                            <option value="">Pilih Pelanggan</option>
+                            @foreach ($pelanggans as $pelanggan)
+                                <option value="{{ $pelanggan->id }}">{{ $pelanggan->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Produk</label>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Produk</th>
-                                        <th>Harga</th>
-                                        <th>Jumlah</th>
-                                        <th>Subtotal</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="produk-rows">
-                                    <tr>
-                                        <td>
-                                            <select name="produks[0][id]" class="form-select produk-select" required>
-                                                <option value="">Pilih Produk</option>
-                                                @foreach ($produks as $produk)
-                                                    <option value="{{ $produk->id }}" data-price="{{ $produk->price }}">{{ $produk->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="produk-price">0</td>
-                                        <td>
-                                            <input type="number" name="produks[0][quantity]" class="form-control quantity" min="1" required>
-                                        </td>
-                                        <td class="subtotal">0</td>
-                                        <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-primary mt-2" id="add-produk">Tambah Produk</button>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Produk</label>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Harga</th>
+                                    <th>Jumlah</th>
+                                    <th>Subtotal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="produk-rows">
+                                <tr>
+                                    <td>
+                                        <select name="produks[0][id]" class="form-select produk-select" required>
+                                            <option value="">Pilih Produk</option>
+                                            @foreach ($produks as $produk)
+                                                <option value="{{ $produk->id }}" data-price="{{ $produk->harga }}">{{ $produk->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="produk-price"></td>
+                                    <td>
+                                        <input type="number" name="produks[0][quantity]" class="form-control quantity" min="1" required>
+                                    </td>
+                                    <td class="subtotal">0</td>
+                                    <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-primary mt-2" id="add-produk">Tambah Produk</button>
+                    </div>
 
-                        <div class="mb-3">
-                            <h5>Total: <span id="total-price" class="badge bg-danger">0</span></h5>
-                        </div>
-                        <button type="submit" class="btn btn-success">Simpan Penjualan</button>
-                    </form>
-                </div>
+                    <div class="mb-3">
+                        <h5>Total: <span id="total-price" class="badge bg-danger">0</span></h5>
+                    </div>
+                    <button type="submit" class="btn btn-success">Simpan Penjualan</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+
 
     <script src="{{ asset('mazer/assets/js/bootstrap.js') }}"></script>
     <script src="{{ asset('mazer/assets/js/app.js') }}"></script>
@@ -129,81 +131,78 @@
     <script src="{{ asset('mazer/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('mazer/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('mazer/assets/js/pages/datatables.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#penjualanTable').DataTable();
-        });
+   <script>
+    let rowIndex = 1;
 
-        let rowIndex = 1;
-
-        document.getElementById('add-produk').addEventListener('click', function () {
-            const tbody = document.getElementById('produk-rows');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <select name="produks[${rowIndex}][id]" class="form-select produk-select" required>
-                        <option value="">Pilih Produk</option>
-                        @foreach ($produks as $produk)
-                            <option value="{{ $produk->id }}" data-price="{{ $produk->price }}">{{ $produk->name }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td class="produk-price">0</td>
-                <td>
-                    <input type="number" name="produks[${rowIndex}][quantity]" class="form-control quantity" min="1" required>
-                </td>
-                <td class="subtotal">0</td>
-                <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
-            `;
-            tbody.appendChild(row);
-            rowIndex++;
-            attachEventListeners();
-            updateTotalPrice();
-        });
-
-        function attachEventListeners() {
-            document.querySelectorAll('.produk-select').forEach(select => {
-                select.addEventListener('change', function () {
-                    const price = this.options[this.selectedIndex].getAttribute('data-price');
-                    const row = this.closest('tr');
-                    row.querySelector('.produk-price').textContent = price || 0;
-                    updateSubtotal(row);
-                    updateTotalPrice();
-                });
-            });
-
-            document.querySelectorAll('.quantity').forEach(input => {
-                input.addEventListener('input', function () {
-                    const row = this.closest('tr');
-                    updateSubtotal(row);
-                    updateTotalPrice();
-                });
-            });
-
-            document.querySelectorAll('.remove-row').forEach(button => {
-                button.addEventListener('click', function () {
-                    this.closest('tr').remove();
-                    updateTotalPrice();
-                });
-            });
-        }
-
-        function updateSubtotal(row) {
-            const price = parseFloat(row.querySelector('.produk-price').textContent);
-            const quantity = parseInt(row.querySelector('.quantity').value) || 0;
-            const subtotal = price * quantity;
-            row.querySelector('.subtotal').textContent = subtotal;
-        }
-
-        function updateTotalPrice() {
-            let total = 0;
-            document.querySelectorAll('.subtotal').forEach(subtotal => {
-                total += parseFloat(subtotal.textContent) || 0;
-            });
-            document.getElementById('total-price').textContent = total;
-        }
-
+    document.getElementById('add-produk').addEventListener('click', function () {
+        const tbody = document.getElementById('produk-rows');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <select name="produks[${rowIndex}][id]" class="form-select produk-select" required>
+                    <option value="">Pilih Produk</option>
+                    @foreach ($produks as $produk)
+                        <option value="{{ $produk->id }}" data-price="{{ $produk->harga }}">{{ $produk->nama }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td class="produk-price"></td>
+            <td>
+                <input type="number" name="produks[${rowIndex}][quantity]" class="form-control quantity" min="1" required>
+            </td>
+            <td class="subtotal">0</td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
+        `;
+        tbody.appendChild(row);
+        rowIndex++;
         attachEventListeners();
-    </script>
+        updateTotalPrice();
+    });
+
+    function attachEventListeners() {
+        document.querySelectorAll('.produk-select').forEach(select => {
+            select.addEventListener('change', function () {
+                const price = parseFloat(this.options[this.selectedIndex].getAttribute('data-price')) || 0;
+                const row = this.closest('tr');
+                row.querySelector('.produk-price').textContent = price.toLocaleString('id-ID');
+                updateSubtotal(row);
+                updateTotalPrice();
+            });
+        });
+
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', function () {
+                const row = this.closest('tr');
+                updateSubtotal(row);
+                updateTotalPrice();
+            });
+        });
+
+        document.querySelectorAll('.remove-row').forEach(button => {
+            button.addEventListener('click', function () {
+                this.closest('tr').remove();
+                updateTotalPrice();
+            });
+        });
+    }
+
+    function updateSubtotal(row) {
+        const select = row.querySelector('.produk-select');
+        const price = parseFloat(select.options[select.selectedIndex].getAttribute('data-price')) || 0;
+        const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+        const subtotal = price * quantity;
+        row.querySelector('.subtotal').textContent = subtotal.toLocaleString('id-ID');
+    }
+
+    function updateTotalPrice() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(subtotal => {
+            total += parseFloat(subtotal.textContent.replace(/[^\d.-]/g, '')) || 0;
+        });
+        document.getElementById('total-price').textContent = total.toLocaleString('id-ID');
+    }
+
+    attachEventListeners();
+</script>
 </body>
 </html>
